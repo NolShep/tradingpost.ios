@@ -17,19 +17,28 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List(trades) { trade in
-                VStack(alignment: .leading) {
+                HStack(spacing: 16) {
                     if let image = trade.getImage() {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 50, height: 50)
+                            .padding(.trailing, 8)
+                    } else {
+                        Color.clear
+                            .frame(width: 50, height: 50)
+                            .padding(.trailing, 8)
                     }
-                    Text(trade.name)
-                        .font(.headline)
-                    Text("\(trade.type) - Price: $\(trade.price)")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(trade.name)
+                            .font(.headline)
+                        Text("\(trade.type) - Price: $\(trade.price)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
                 }
+                .padding(.vertical, 8)
             }
             .navigationTitle("Open Trades")
         }
