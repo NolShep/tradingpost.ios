@@ -8,7 +8,8 @@
 import Foundation
 import SwiftUI
 
-class TradeItem {
+class TradeItem: Identifiable {
+    let id = UUID()
     var name: String
     var type: String
     var price: Double
