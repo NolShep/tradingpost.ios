@@ -15,8 +15,8 @@ struct ContentView: View {
     enum Tab {
         case home
         case newTrade
-        case dummy1
-        case dummy2
+        case message
+        case profile
     }
     
     let trades: [TradeItem] = [
@@ -81,19 +81,19 @@ struct ContentView: View {
             }
             .tag(Tab.newTrade)
             
-            Text("Dummy 1")
+            Text("Messages")
+                .tabItem {
+                    Image(systemName: "message.fill")
+                    Text("Message")
+                }
+                .tag(Tab.message)
+            
+            Text("Profile")
                 .tabItem {
                     Image(systemName: "person.fill")
-                    Text("Dummy 1")
+                    Text("Profile")
                 }
-                .tag(Tab.dummy1)
-            
-            Text("Dummy 2")
-                .tabItem {
-                    Image(systemName: "gearshape.fill")
-                    Text("Dummy 2")
-                }
-                .tag(Tab.dummy2)
+                .tag(Tab.profile)
         }
     }
     
@@ -103,10 +103,10 @@ struct ContentView: View {
             return "Open Trades"
         case .newTrade:
             return "New Trade"
-        case .dummy1:
-            return "Dummy 1"
-        case .dummy2:
-            return "Dummy 2"
+        case .message:
+            return "Messages"
+        case .profile:
+            return "Profile"
         }
     }
 }
