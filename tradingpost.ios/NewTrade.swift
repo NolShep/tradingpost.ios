@@ -12,6 +12,8 @@ struct CreateTradeView: View {
     @State private var tradeName: String = ""
     @State private var tradeType: String = ""
     @State private var tradePrice: String = ""
+    
+    @ObservedObject var tradeData: TradeData
 
     var body: some View {
         VStack {
@@ -47,28 +49,24 @@ struct CreateTradeView: View {
     }
     
     private func createTrade() {
-        // get trade data from  input fields and create a new TradeItem
-        guard let price = Double(tradePrice) else {
-            // error handle invalid price input
-            return
+            guard let price = Double(tradePrice) else {
+                return
+            }
+            
+            let trade = TradeItem(name: tradeName, type: tradeType, price: price)
+            tradeData.addTrade(trade)
+            
+            tradeName = ""
+            tradeType = ""
+            tradePrice = ""
         }
-        
-        let trade = TradeItem(name: tradeName, type: tradeType, price: price)
-        
-        // future: add trade to server
-        
-        // clear the input fields
-        tradeName = ""
-        tradeType = ""
-        tradePrice = ""
-        
-        // future: show success or error message
     }
-}
 
 struct CreateTradeView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateTradeView()
+        // mock TradeData object
+        let tradeData = TradeData() 
+        CreateTradeView(tradeData: tradeData)
     }
 }
 

@@ -9,27 +9,37 @@ import SwiftUI
 
 import SwiftUI
 
+class TradeData: ObservableObject {
+    @Published var trades: [TradeItem] = []
+    
+    func addTrade(_ trade: TradeItem) {
+        trades.append(trade)
+    }
+}
+
 struct ContentView: View {
     @State private var selectedTab: Tab = .home
-    
+    @StateObject private var tradeData = TradeData()
+
     enum Tab {
         case home
         case newTrade
         case message
         case profile
     }
-    
+    /*
     let trades: [TradeItem] = [
         TradeItem(name: "Trade 1", type: "Buy", price: 100),
         TradeItem(name: "Trade 2", type: "Sell", price: 200),
         // Add more trades as needed
     ]
+     */
     
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
                 VStack {
-                    List(trades) { trade in
+                    List(tradeData.trades) { trade in
                         HStack(spacing: 16) {
                             if let image = trade.getImage() {
                                 image
@@ -73,7 +83,7 @@ struct ContentView: View {
             .tag(Tab.home)
             
             NavigationView {
-                CreateTradeView()
+                CreateTradeView(tradeData: tradeData)
             }
             .tabItem {
                 Image(systemName: "plus.circle.fill")
