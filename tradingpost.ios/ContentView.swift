@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 class TradeData: ObservableObject {
     @Published var trades: [TradeItem] = []
     
@@ -19,7 +17,9 @@ class TradeData: ObservableObject {
 
 struct ContentView: View {
     @State private var selectedTab: Tab = .home
+    
     @StateObject private var tradeData = TradeData()
+    @StateObject private var profileData = ProfileData()
 
     enum Tab {
         case home
@@ -35,6 +35,7 @@ struct ContentView: View {
     ]
      */
     
+    //home trades struct
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
@@ -76,12 +77,15 @@ struct ContentView: View {
                     Spacer()
                 }
             }
+            
+            //home
             .tabItem {
                 Image(systemName: "house.fill")
                 Text("Home")
             }
             .tag(Tab.home)
             
+            //new trade
             NavigationView {
                 CreateTradeView(tradeData: tradeData)
             }
@@ -91,6 +95,7 @@ struct ContentView: View {
             }
             .tag(Tab.newTrade)
             
+            //dummy message page
             Text("Messages")
                 .tabItem {
                     Image(systemName: "message.fill")
@@ -98,15 +103,20 @@ struct ContentView: View {
                 }
                 .tag(Tab.message)
             
-            Text("Profile")
-                .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Profile")
-                }
-                .tag(Tab.profile)
+            //profile
+            NavigationView {
+                ProfileView(profileData: profileData)
+            }
+            .tabItem {
+                Image(systemName: "person.fill")
+                Text("Profile")
+            }
+            .tag(Tab.profile)
+
         }
     }
     
+    //menu bar
     private func tabTitle(for tab: Tab) -> String {
         switch tab {
         case .home:
