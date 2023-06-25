@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 class TradeItem: Identifiable {
+    //trade obj
     let id = UUID()
     var name: String
     var type: String
@@ -22,6 +23,7 @@ class TradeItem: Identifiable {
         self.imageData = imageData
     }
 
+    //get trade img
     func getImage() -> Image? {
         guard let imageData = imageData else {
             return nil

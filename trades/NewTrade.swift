@@ -9,27 +9,29 @@ import Foundation
 import SwiftUI
 
 struct CreateTradeView: View {
+    //init vars
     @State private var tradeName: String = ""
     @State private var tradeType: String = ""
     @State private var tradePrice: String = ""
     
     @ObservedObject var tradeData: TradeData
-
+    
     var body: some View {
         VStack {
+            //Input boxes
             TextField("Trade Name", text: $tradeName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-
+            
             TextField("Trade Type", text: $tradeType)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-
+            
             TextField("Trade Price", text: $tradePrice)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.decimalPad)
                 .padding()
-
+            
             Button(action: {
                 // trade creation
                 createTrade()
@@ -49,21 +51,25 @@ struct CreateTradeView: View {
     }
     
     private func createTrade() {
-            guard let price = Double(tradePrice) else {
-                return
-            }
-            
-            let trade = TradeItem(name: tradeName, type: tradeType, price: price)
-            tradeData.addTrade(trade)
-            
-            tradeName = ""
-            tradeType = ""
-            tradePrice = ""
+        guard let price = Double(tradePrice)
+        
+        else {
+            return
         }
+        
+        //add trade to home page and reset trade fields
+        let trade = TradeItem(name: tradeName, type: tradeType, price: price)
+        tradeData.addTrade(trade)
+        
+        tradeName = ""
+        tradeType = ""
+        tradePrice = ""
     }
+}
 
 struct CreateTradeView_Previews: PreviewProvider {
     static var previews: some View {
+        
         // mock TradeData object
         let tradeData = TradeData() 
         CreateTradeView(tradeData: tradeData)
