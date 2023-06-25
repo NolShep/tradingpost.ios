@@ -33,17 +33,25 @@ class ProfileData: ObservableObject {
 }
 
 struct ProfileView: View {
+    
+    @ObservedObject var profileData: ProfileData
+
     //Init object vars
     @State private var username = ""
     @State private var email = ""
     @State private var password = ""
-        
+    
     //validation messages
     @State private var usernameValidationMessage = ""
     @State private var passwordValidationMessage = ""
     @State private var emailValidationMessage = ""
-    
-    @ObservedObject var profileData: ProfileData
+        
+    private var isSignUpButtonDisabled: Bool {
+            username.isEmpty || email.isEmpty || password.isEmpty ||
+                !validateUsername(username) || !validateEmail(email) || !validatePassword(password)
+        }
+    @State private var isSignUpErrorShown = false
+
     
     var body: some View {
         VStack {
@@ -75,7 +83,15 @@ struct ProfileView: View {
                 
                 //Sign Up/Login options
                 Button(action: {
-                    profileData.signUp(username: username, email: email, password: password)
+                    if isSignUpButtonDisabled {
+                        validateUsername(username)
+                        validateEmail(email)
+                        validatePassword(password)
+                    }
+                    else {
+                        profileData.signUp(username: username, email: email, password: password)
+                    }
+                    
                 }) {
                     Text("Sign Up")
                         .font(.headline)
@@ -97,26 +113,38 @@ struct ProfileView: View {
                 }
             }
         }
+        .alert(isPresented: $isSignUpErrorShown) {
+            Alert(
+                title: Text("Sign Up Error"),
+                message: Text("Please check your entries."),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
     
     //check for valid username
-    private func validateUsername(_ username: String) {
+    private func validateUsername(_ username: String) -> Bool{
         if username.count > 12 {
             usernameValidationMessage = "Username cannot exceed 12 characters"
+            return false
         }
         else{
             usernameValidationMessage = ""
+            return true
         }
     }
     
     //check for valid pass
-    private func validatePassword(_ password: String) {
+    private func validatePassword(_ password: String) -> Bool {
         if password.count < 7 || password.count > 15 {
             passwordValidationMessage = "Password must be between 7 and 15 characters"
+            return false
         } else if !containsNumber(password) || !containsSpecialCharacter(password) {
             passwordValidationMessage = "Password must contain at least one number and one special character"
+            return false
         } else {
             passwordValidationMessage = ""
+            return true
         }
     }
     
@@ -135,12 +163,14 @@ struct ProfileView: View {
     }
     
     //check for valid email
-    private func validateEmail(_ email: String) {
-        if !email.contains("@") {
+    private func validateEmail(_ email: String) -> Bool{
+        if !email.contains("@") && !email.contains(".") {
             emailValidationMessage = "Email must be valid"
+            return false
         }
         else {
             emailValidationMessage = ""
+            return true
         }
         
     }
