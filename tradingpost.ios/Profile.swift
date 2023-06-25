@@ -33,9 +33,15 @@ class ProfileData: ObservableObject {
 }
 
 struct ProfileView: View {
+    //Init object vars
     @State private var username = ""
     @State private var email = ""
     @State private var password = ""
+        
+    //validation messages
+    @State private var usernameValidationMessage = ""
+    @State private var passwordValidationMessage = ""
+    @State private var emailValidationMessage = ""
     
     @ObservedObject var profileData: ProfileData
     
@@ -46,18 +52,28 @@ struct ProfileView: View {
                 Text("Email: \(profile.email)")
                 Text("Password: \(profile.password)")
             } else {
+                //User text w/ error checking
                 TextField("Username", text: $username)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
+                Text(usernameValidationMessage)
+                    .foregroundColor(.red)
                 
+                //Email text w/ error checking
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
+                Text(emailValidationMessage)
+                    .foregroundColor(.red)
                 
+                //Pass text w/ error checking
                 SecureField("Password", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
+                Text(passwordValidationMessage)
+                    .foregroundColor(.red)
                 
+                //Sign Up/Login options
                 Button(action: {
                     profileData.signUp(username: username, email: email, password: password)
                 }) {
@@ -81,6 +97,52 @@ struct ProfileView: View {
                 }
             }
         }
+    }
+    
+    //check for valid username
+    private func validateUsername(_ username: String) {
+        if username.count > 12 {
+            usernameValidationMessage = "Username cannot exceed 12 characters"
+        }
+        else{
+            usernameValidationMessage = ""
+        }
+    }
+    
+    //check for valid pass
+    private func validatePassword(_ password: String) {
+        if password.count < 7 || password.count > 15 {
+            passwordValidationMessage = "Password must be between 7 and 15 characters"
+        } else if !containsNumber(password) || !containsSpecialCharacter(password) {
+            passwordValidationMessage = "Password must contain at least one number and one special character"
+        } else {
+            passwordValidationMessage = ""
+        }
+    }
+    
+    //helper for pass validation
+    private func containsNumber(_ password: String) -> Bool {
+        let numberRegex = ".*\\d.*"
+        let numberPredicate = NSPredicate(format: "SELF MATCHES %@", numberRegex)
+        return numberPredicate.evaluate(with: password)
+    }
+    
+    //helper for pass validation
+    private func containsSpecialCharacter(_ password: String) -> Bool {
+        let specialCharRegex = ".*[@$!%*#?&].*"
+        let specialCharPredicate = NSPredicate(format: "SELF MATCHES %@", specialCharRegex)
+        return specialCharPredicate.evaluate(with: password)
+    }
+    
+    //check for valid email
+    private func validateEmail(_ email: String) {
+        if !email.contains("@") {
+            emailValidationMessage = "Email must be valid"
+        }
+        else {
+            emailValidationMessage = ""
+        }
+        
     }
 }
 
