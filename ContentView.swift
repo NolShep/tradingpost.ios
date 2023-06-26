@@ -28,6 +28,7 @@ struct ContentView: View {
         case profile
     }
     /*
+     Testing purpose trades 
     let trades: [TradeItem] = [
         TradeItem(name: "Trade 1", type: "Buy", price: 100),
         TradeItem(name: "Trade 2", type: "Sell", price: 200),
@@ -76,6 +77,14 @@ struct ContentView: View {
                     
                     Spacer()
                 }
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.blue, Color.white]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .edgesIgnoringSafeArea(.all)
+                )
             }
             
             //home
