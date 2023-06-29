@@ -77,6 +77,28 @@ struct ContentView: View {
                     
                     Spacer()
                 }
+                .background(
+                    ZStack {
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.blue, Color.white]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        .ignoresSafeArea()
+                    }
+                )
+                
+                .overlay(
+                    GeometryReader { geometry in
+                        Rectangle()
+                            .fill(Color.white)
+                            .frame(width: geometry.size.width - 8, height: 50)
+                            .position(x: geometry.size.width / 2, y: geometry.size.height + 25)
+
+                    }
+                    .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                )
+
             }
             
             //home
