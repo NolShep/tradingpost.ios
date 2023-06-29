@@ -77,14 +77,6 @@ struct ContentView: View {
                     
                     Spacer()
                 }
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color.blue, Color.white]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .edgesIgnoringSafeArea(.all)
-                )
             }
             
             //home
