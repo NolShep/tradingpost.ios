@@ -27,14 +27,14 @@ struct ContentView: View {
         case message
         case profile
     }
-    /*
-     Testing purpose trades 
+    
+    // Testing purpose trades 
     let trades: [TradeItem] = [
         TradeItem(name: "Trade 1", type: "Buy", price: 100),
         TradeItem(name: "Trade 2", type: "Sell", price: 200),
         // Add more trades as needed
     ]
-     */
+     
     
     //home trades struct
     var body: some View {
@@ -73,9 +73,23 @@ struct ContentView: View {
                                 // future: edit button action
                             }
                         }
+                        
                     }
+                    .overlay(
+                        GeometryReader { geometry in
+                            Rectangle()
+                                .fill(Color.white.opacity(0.3))
+                                .frame(width: geometry.size.width - 8, height: geometry.size.height)
+                                .position(x: geometry.size.width / 2 , y: geometry.size.height / 2 - 4)
+                                .cornerRadius(15)
+
+
+                        }
+                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                    )
                     
                     Spacer()
+                    
                 }
                 .background(
                     ZStack {
@@ -88,16 +102,7 @@ struct ContentView: View {
                     }
                 )
                 
-                .overlay(
-                    GeometryReader { geometry in
-                        Rectangle()
-                            .fill(Color.white)
-                            .frame(width: geometry.size.width - 8, height: 50)
-                            .position(x: geometry.size.width / 2, y: geometry.size.height + 25)
-
-                    }
-                    .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-                )
+        
 
             }
             
