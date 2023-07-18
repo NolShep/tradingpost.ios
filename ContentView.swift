@@ -59,7 +59,7 @@ struct ContentView: View {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(trade.name)
                                         .font(.headline)
-                                    Text("\(trade.type) - Price: $\(trade.price)")
+                                    Text("\(trade.type) - Price: $\(String(format: "%.2f", trade.price))")
                                         .font(.subheadline)
                                         .foregroundColor(.secondary)
                                 }
@@ -78,7 +78,7 @@ struct ContentView: View {
                     
                         .padding(.horizontal, 12) // Add horizontal padding to the content
                                             .background(
-                                                Color.blue 
+                                                Color.blue
                                                     .ignoresSafeArea()
                                             )
                         Spacer()
