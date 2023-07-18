@@ -28,80 +28,63 @@ struct ContentView: View {
         case profile
     }
     
-    // Testing purpose trades 
-    let trades: [TradeItem] = [
-        TradeItem(name: "Trade 1", type: "Buy", price: 100),
-        TradeItem(name: "Trade 2", type: "Sell", price: 200),
-        // Add more trades as needed
-    ]
+    // Testing purpose trades
+        let trades: [TradeItem] = [
+            TradeItem(name: "Trade 1", type: "Buy", price: 100),
+            TradeItem(name: "Trade 2", type: "Sell", price: 200),
+            TradeItem(name: "Trade 3", type: "Exchange", price: 150),
+        ]
      
     
     //home trades struct
     var body: some View {
-        TabView(selection: $selectedTab) {
-            NavigationView {
-                VStack {
-                    List(tradeData.trades) { trade in
-                        HStack(spacing: 16) {
-                            if let image = trade.getImage() {
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 50, height: 50)
-                                    .padding(.trailing, 8)
-                            } else {
-                                Color.clear
-                                    .frame(width: 50, height: 50)
-                                    .padding(.trailing, 8)
+            TabView(selection: $selectedTab) {
+                NavigationView {
+                    VStack {
+                        // Display the 3 demo trades here
+                        List(trades) { trade in
+                            HStack(spacing: 16) {
+                                if let image = trade.getImage() {
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 50, height: 50)
+                                        .padding(.trailing, 8)
+                                } else {
+                                    Color.clear
+                                        .frame(width: 50, height: 50)
+                                        .padding(.trailing, 8)
+                                }
+                                
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(trade.name)
+                                        .font(.headline)
+                                    Text("\(trade.type) - Price: $\(trade.price)")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                }
                             }
-                            
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(trade.name)
-                                    .font(.headline)
-                                Text("\(trade.type) - Price: $\(trade.price)")
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
+                            .padding(.vertical, 8)
+                        }
+                        .navigationTitle(tabTitle(for: selectedTab))
+                        .navigationBarHidden(selectedTab == .newTrade)
+                        .toolbar {
+                            if selectedTab == .home {
+                                Button("Edit") {
+                                    // future: edit button action
+                                }
                             }
                         }
-                        .padding(.vertical, 8)
-                    }
-                    .navigationTitle(tabTitle(for: selectedTab))
-                    .navigationBarHidden(selectedTab == .newTrade)
-                    .toolbar {
-                        if selectedTab == .home {
-                            Button("Edit") {
-                                // future: edit button action
-                            }
-                        }
+                    
+                        .padding(.horizontal, 12) // Add horizontal padding to the content
+                                            .background(
+                                                Color.blue 
+                                                    .ignoresSafeArea()
+                                            )
+                        Spacer()
                         
                     }
-                    .overlay(
-                        GeometryReader { geometry in
-                            Rectangle()
-                                .fill(Color.white.opacity(0.3))
-                                .frame(width: geometry.size.width - 8, height: geometry.size.height)
-                                .position(x: geometry.size.width / 2 , y: geometry.size.height / 2 - 4)
-                                .cornerRadius(15)
-
-
-                        }
-                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-                    )
-                    
-                    Spacer()
-                    
-                }
-                .background(
-                    ZStack {
-                        LinearGradient(
-                            gradient: Gradient(colors: [Color.blue, Color.white]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                        .ignoresSafeArea()
-                    }
-                )
-                
+                   
         
 
             }
