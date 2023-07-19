@@ -29,74 +29,39 @@ struct ContentView: View {
     }
     
     // Testing purpose trades
-        let trades: [TradeItem] = [
-            TradeItem(name: "Trade 1", type: "Buy", price: 100),
-            TradeItem(name: "Trade 2", type: "Sell", price: 200),
-            TradeItem(name: "Trade 3", type: "Exchange", price: 150),
-        ]
+    let trades: [TradeItem] = [
+        TradeItem(name: "Trade 1", type: "Buy", price: 100),
+        TradeItem(name: "Trade 2", type: "Sell", price: 200),
+        TradeItem(name: "Trade 3", type: "Exchange", price: 150),
+    ]
      
-    
-    //home trades struct
     var body: some View {
-            TabView(selection: $selectedTab) {
+        TabView(selection: $selectedTab) {
+            ZStack {
+                Color.black.ignoresSafeArea()
                 NavigationView {
-                    VStack {
-                        // Display the 3 demo trades here
-                        List(trades) { trade in
-                            HStack(spacing: 16) {
-                                if let image = trade.getImage() {
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 50, height: 50)
-                                        .padding(.trailing, 8)
-                                } else {
-                                    Color.clear
-                                        .frame(width: 50, height: 50)
-                                        .padding(.trailing, 8)
-                                }
-                                
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(trade.name)
-                                        .font(.headline)
-                                    Text("\(trade.type) - Price: $\(String(format: "%.2f", trade.price))")
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                            .padding(.vertical, 8)
-                        }
-                        .navigationTitle(tabTitle(for: selectedTab))
-                        .navigationBarHidden(selectedTab == .newTrade)
-                        .toolbar {
-                            if selectedTab == .home {
-                                Button("Edit") {
-                                    // future: edit button action
-                                }
-                            }
-                        }
-                    
-                        .padding(.horizontal, 12) // Add horizontal padding to the content
-                                            .background(
-                                                Color.blue
-                                                    .ignoresSafeArea()
-                                            )
-                        Spacer()
-                        
+                    List(trades) { trade in
+                        TradeRow(trade: trade)
                     }
-                   
-        
-
+                    .listStyle(InsetGroupedListStyle())
+                    .navigationTitle(tabTitle(for: selectedTab))
+                    .navigationBarHidden(selectedTab == .newTrade)
+                    .toolbar {
+                        if selectedTab == .home {
+                            Button("Edit") {
+                                // future: edit button action
+                            }
+                        }
+                    }
+                    .background(Color.clear)
+                }
             }
-            
-            //home
             .tabItem {
                 Image(systemName: "house.fill")
                 Text("Home")
             }
             .tag(Tab.home)
             
-            //new trade
             NavigationView {
                 CreateTradeView(tradeData: tradeData)
             }
@@ -106,7 +71,6 @@ struct ContentView: View {
             }
             .tag(Tab.newTrade)
             
-            //dummy message page
             Text("Messages")
                 .tabItem {
                     Image(systemName: "message.fill")
@@ -114,7 +78,6 @@ struct ContentView: View {
                 }
                 .tag(Tab.message)
             
-            //profile
             NavigationView {
                 ProfileView(profileData: profileData)
             }
@@ -123,11 +86,10 @@ struct ContentView: View {
                 Text("Profile")
             }
             .tag(Tab.profile)
-
         }
+        .accentColor(.orange)
     }
     
-    //menu bar
     private func tabTitle(for tab: Tab) -> String {
         switch tab {
         case .home:
@@ -139,6 +101,36 @@ struct ContentView: View {
         case .profile:
             return "Profile"
         }
+    }
+}
+
+// Encapsulated Trade Row View
+struct TradeRow: View {
+    var trade: TradeItem
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            trade.getImage()?
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 50, height: 50)
+                .clipped()
+                .cornerRadius(8)
+            
+            VStack(alignment: .leading, spacing: 6) {
+                Text(trade.name)
+                    .font(.headline)
+                    .foregroundColor(.black)
+                Text("\(trade.type) - Price: $\(String(format: "%.2f", trade.price))")
+                    .font(.subheadline)
+                    .foregroundColor(.black)
+            }
+            Spacer()
+        }
+        .padding(.vertical, 16)
+        .background(Color.orange.opacity(0.4))
+        .cornerRadius(8)
+        .padding(.horizontal, 4)
     }
 }
 
