@@ -125,6 +125,7 @@ struct TradeRow: View {
                     .font(.subheadline)
                     .foregroundColor(.black)
             }
+            .padding(.leading, 10) 
             Spacer()
         }
         .padding(.vertical, 16)
