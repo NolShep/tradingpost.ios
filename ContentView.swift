@@ -109,13 +109,25 @@ struct TradeRow: View {
     var trade: TradeItem
     
     var body: some View {
-        HStack(spacing: 16) {
-            trade.getImage()?
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 50, height: 50)
-                .clipped()
-                .cornerRadius(8)
+        HStack(spacing: -10) {
+            if let data = trade.imageData, let uiImage = UIImage(data: data) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 50, height: 50)
+                    .clipped()
+                    .cornerRadius(8)
+                    .padding(12)
+            } else {
+                Image(systemName: "photo") // placeholder image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 50, height: 50)
+                    .clipped()
+                    .cornerRadius(8)
+                    .padding(12)
+                
+            }
             
             VStack(alignment: .leading, spacing: 6) {
                 Text(trade.name)
@@ -125,15 +137,16 @@ struct TradeRow: View {
                     .font(.subheadline)
                     .foregroundColor(.black)
             }
-            .padding(.leading, 10) 
+            .padding(.leading, 10)
             Spacer()
         }
-        .padding(.vertical, 16)
+        .padding(.vertical, 14)
         .background(Color.orange.opacity(0.4))
         .cornerRadius(8)
         .padding(.horizontal, 4)
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
